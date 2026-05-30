@@ -1,4 +1,4 @@
-/* HealthScan AI — Frontend Logic */
+
 
 "use strict";
 
@@ -7,14 +7,14 @@ let deleteTargetId = null;
 let drawerPatientId = null;
 let searchTimer = null;
 
-// ─── Init ──────────────────────────────────────────────────────────
+
 document.addEventListener("DOMContentLoaded", () => {
   loadPatients();
-  // Prevent future dates on DOB field
+ 
   document.getElementById("dob").max = new Date().toISOString().split("T")[0];
 });
 
-// ─── API helpers ───────────────────────────────────────────────────
+
 async function api(method, path, body) {
   const opts = {
     method,
@@ -26,7 +26,7 @@ async function api(method, path, body) {
   return { ok: res.ok, status: res.status, data };
 }
 
-// ─── Load / Render ─────────────────────────────────────────────────
+
 async function loadPatients(search = "") {
   const q = search ? `?search=${encodeURIComponent(search)}` : "";
   const { ok, data } = await api("GET", `/patients${q}`);
@@ -73,7 +73,7 @@ function renderTable(list) {
   `).join("");
 }
 
-// ─── Value colour chips ────────────────────────────────────────────
+
 function glucoseChip(v) {
   const cls = v < 70 ? "val-warning" : v <= 99 ? "val-normal" : v <= 125 ? "val-warning" : "val-danger";
   return `<span class="val-chip ${cls}">${v}</span>`;
@@ -87,7 +87,7 @@ function cholesterolChip(v) {
   return `<span class="val-chip ${cls}">${v}</span>`;
 }
 
-// ─── Modal ─────────────────────────────────────────────────────────
+
 function openModal() {
   document.getElementById("patientId").value = "";
   document.getElementById("modalTitle").textContent = "New Patient Record";
@@ -120,7 +120,7 @@ function closeOnOverlay(e) {
   if (e.target === document.getElementById("modalOverlay")) closeModal();
 }
 
-// ─── Save (Create / Update) ────────────────────────────────────────
+
 async function savePatient() {
   hideErrors();
 
@@ -134,7 +134,6 @@ async function savePatient() {
     cholesterol:   document.getElementById("cholesterol").value,
   };
 
-  // Client-side quick checks
   const localErrors = [];
   if (!payload.full_name) localErrors.push("Full name is required.");
   if (!payload.date_of_birth) localErrors.push("Date of birth is required.");
@@ -168,7 +167,7 @@ function setBtnLoading(loading) {
   document.getElementById("saveBtn").disabled = loading;
 }
 
-// ─── Delete ────────────────────────────────────────────────────────
+
 function openDelete(id) {
   deleteTargetId = id;
   document.getElementById("deleteOverlay").classList.add("open");
@@ -184,7 +183,6 @@ async function confirmDelete() {
   if (ok) loadPatients(document.getElementById("searchInput").value.trim());
 }
 
-// ─── Remarks Drawer ────────────────────────────────────────────────
 function openDrawer(id) {
   const p = patients.find(x => x.id === id);
   if (!p) return;
@@ -216,7 +214,7 @@ async function reanalyze() {
   }
 }
 
-// ─── Search ────────────────────────────────────────────────────────
+
 function debounceSearch() {
   const val = document.getElementById("searchInput").value;
   document.getElementById("searchClear").classList.toggle("visible", val.length > 0);
@@ -229,7 +227,7 @@ function clearSearch() {
   loadPatients();
 }
 
-// ─── Error helpers ─────────────────────────────────────────────────
+
 function showErrors(errors) {
   const box = document.getElementById("errorBox");
   box.style.display = "block";
@@ -243,7 +241,7 @@ function hideErrors() {
   box.innerHTML = "";
 }
 
-// ─── Utilities ─────────────────────────────────────────────────────
+
 function esc(str) {
   return String(str ?? "")
     .replace(/&/g, "&amp;")
