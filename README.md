@@ -117,7 +117,8 @@ healthscan-ai/
 
 ## 📸 Screenshots
 
-> Add screenshots of your running application here.
+<img width="1920" height="1080" alt="Screenshot (865)" src="https://github.com/user-attachments/assets/baf11714-072e-4eed-b94a-90d9413fe923" />
+
 
 ---
 
