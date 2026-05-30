@@ -1,7 +1,3 @@
-/* HealthScan AI — Clinical Dashboard Styles
-   Aesthetic: Dark clinical / medical-grade precision
-   Fonts: Space Mono (mono/technical) + DM Sans (readable body)
-*/
 
 :root {
   --bg-base:       #0a0d12;
@@ -46,7 +42,7 @@ html, body {
   line-height: 1.6;
 }
 
-/* ---------- HEADER ---------- */
+
 .site-header {
   position: sticky;
   top: 0;
@@ -113,7 +109,7 @@ html, body {
 }
 .stat-chip span { color: var(--accent-cyan); font-weight: 700; }
 
-/* ---------- SEARCH ---------- */
+
 .search-bar-wrap {
   background: var(--bg-base);
   padding: 1.25rem 2rem;
@@ -153,7 +149,7 @@ html, body {
 }
 .search-clear.visible { opacity: 1; }
 
-/* ---------- TABLE ---------- */
+
 .main-content {
   max-width: 1400px;
   margin: 2rem auto;
@@ -209,7 +205,7 @@ html, body {
   font-size: 0.875rem;
 }
 
-/* Patient name+email cell */
+
 .cell-patient { display: flex; flex-direction: column; gap: 2px; }
 .cell-patient strong { font-weight: 600; color: var(--text-primary); }
 .cell-patient span {
@@ -218,7 +214,7 @@ html, body {
   font-family: var(--mono);
 }
 
-/* Numeric value chips */
+
 .val-chip {
   font-family: var(--mono);
   font-size: 0.8rem;
@@ -231,7 +227,7 @@ html, body {
 .val-warning  { background: rgba(255,211,42,0.12); color: var(--accent-yellow); }
 .val-danger   { background: rgba(255,71,87,0.12);  color: var(--accent-red); }
 
-/* Remarks cell */
+
 .remarks-cell {
   max-width: 260px;
   overflow: hidden;
@@ -252,7 +248,7 @@ html, body {
   font-size: 0.75rem;
 }
 
-/* Action buttons */
+
 .action-btns { display: flex; gap: 0.5rem; }
 .btn-icon {
   width: 32px; height: 32px;
@@ -268,7 +264,7 @@ html, body {
 .btn-icon:hover         { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(46,159,255,0.08); }
 .btn-icon.delete:hover  { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,71,87,0.08); }
 
-/* Empty state */
+
 .empty-row td {
   text-align: center;
   padding: 4rem 1rem;
@@ -279,7 +275,7 @@ html, body {
   font-size: 0.85rem;
 }
 
-/* ---------- BUTTONS ---------- */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -318,7 +314,7 @@ html, body {
 .btn-danger:hover { background: #ff6b7a; }
 .btn-sm { padding: 0.4rem 0.9rem; font-size: 0.8rem; }
 
-/* ---------- MODAL ---------- */
+
 .modal-overlay {
   display: none;
   position: fixed;
@@ -371,7 +367,7 @@ html, body {
 }
 .modal-close:hover { color: var(--text-primary); }
 
-/* Form */
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -470,7 +466,7 @@ html, body {
 }
 .error-box ul { margin: 0.25rem 0 0 1.25rem; }
 
-/* ---------- SPINNER ---------- */
+
 .spinner {
   width: 14px; height: 14px;
   border: 2px solid rgba(255,255,255,0.3);
@@ -481,7 +477,7 @@ html, body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------- REMARKS DRAWER ---------- */
+
 .drawer-overlay {
   display: none;
   position: fixed;
@@ -544,7 +540,7 @@ html, body {
   padding: 1.25rem;
 }
 
-/* ---------- CONFIRM ---------- */
+
 .confirm-card {
   max-width: 380px;
   text-align: center;
@@ -561,7 +557,7 @@ html, body {
 }
 .confirm-card .modal-footer { justify-content: center; }
 
-/* ---------- RESPONSIVE ---------- */
+
 @media (max-width: 900px) {
   .form-grid.three-col { grid-template-columns: 1fr 1fr; }
   .remarks-drawer { width: 100%; }
