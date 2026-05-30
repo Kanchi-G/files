@@ -13,19 +13,18 @@ import anthropic
 
 app = Flask(__name__)
 
-# --- Configuration ---
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(BASE_DIR, 'instance', 'health.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Set your Anthropic API key via environment variable:
-#   export ANTHROPIC_API_KEY="your_key_here"
+
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 db = SQLAlchemy(app)
 
 
-# --- Model ---
+
 class Patient(db.Model):
     __tablename__ = "patients"
 
@@ -60,7 +59,7 @@ with app.app_context():
     db.create_all()
 
 
-# --- Validation helpers ---
+
 def validate_email(email: str) -> bool:
     return bool(re.match(r"^[\w.+\-]+@[\w\-]+\.[a-zA-Z]{2,}$", email))
 
@@ -106,7 +105,7 @@ def validate_patient_data(data: dict, is_update: bool = False) -> list[str]:
     return errors
 
 
-# --- AI Health Analysis ---
+
 def generate_health_remarks(patient: dict) -> str:
     """
     Call the Anthropic Claude API to generate a clinical health assessment
@@ -163,7 +162,7 @@ def generate_rule_based_remarks(patient: dict) -> str:
     cholesterol = float(patient["cholesterol"])
     age = calculate_age(patient["date_of_birth"])
 
-    # Glucose assessment
+   
     if glucose < 70:
         issues.append("hypoglycemia (low blood sugar)")
         recommendations.append("monitor glucose closely")
@@ -174,7 +173,7 @@ def generate_rule_based_remarks(patient: dict) -> str:
         issues.append("elevated glucose suggesting possible diabetes")
         recommendations.append("urgent diabetes screening recommended")
 
-    # Haemoglobin assessment
+ 
     if haemoglobin < 12:
         issues.append("low haemoglobin indicating possible anaemia")
         recommendations.append("iron and nutritional assessment advised")
@@ -182,7 +181,7 @@ def generate_rule_based_remarks(patient: dict) -> str:
         issues.append("elevated haemoglobin")
         recommendations.append("further investigation needed")
 
-    # Cholesterol assessment
+   
     if 200 <= cholesterol <= 239:
         issues.append("borderline high cholesterol")
         recommendations.append("dietary changes recommended")
@@ -205,13 +204,12 @@ def generate_rule_based_remarks(patient: dict) -> str:
     )
 
 
-# --- Routes ---
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-# CREATE
+
 @app.route("/api/patients", methods=["POST"])
 def create_patient():
     data = request.get_json(silent=True)
@@ -222,7 +220,7 @@ def create_patient():
     if errors:
         return jsonify({"errors": errors}), 422
 
-    # Check duplicate email
+   
     if Patient.query.filter_by(email=data["email"].strip().lower()).first():
         return jsonify({"errors": ["A patient with this email already exists."]}), 409
 
@@ -242,7 +240,7 @@ def create_patient():
     return jsonify(patient.to_dict()), 201
 
 
-# READ ALL
+
 @app.route("/api/patients", methods=["GET"])
 def list_patients():
     search = request.args.get("search", "").strip()
@@ -256,7 +254,7 @@ def list_patients():
     return jsonify([p.to_dict() for p in patients])
 
 
-# READ ONE
+
 @app.route("/api/patients/<int:patient_id>", methods=["GET"])
 def get_patient(patient_id):
     patient = db.session.get(Patient, patient_id)
@@ -265,7 +263,7 @@ def get_patient(patient_id):
     return jsonify(patient.to_dict())
 
 
-# UPDATE
+
 @app.route("/api/patients/<int:patient_id>", methods=["PUT"])
 def update_patient(patient_id):
     patient = db.session.get(Patient, patient_id)
@@ -280,7 +278,7 @@ def update_patient(patient_id):
     if errors:
         return jsonify({"errors": errors}), 422
 
-    # Check email uniqueness (exclude self)
+  
     if "email" in data:
         existing = Patient.query.filter_by(email=data["email"].strip().lower()).first()
         if existing and existing.id != patient_id:
@@ -294,7 +292,7 @@ def update_patient(patient_id):
         if field in data:
             setattr(patient, field, float(data[field]))
 
-    # Regenerate AI remarks when blood values change
+    
     patient.remarks = generate_health_remarks(patient.to_dict())
     patient.updated_at = datetime.utcnow()
 
@@ -302,7 +300,6 @@ def update_patient(patient_id):
     return jsonify(patient.to_dict())
 
 
-# DELETE
 @app.route("/api/patients/<int:patient_id>", methods=["DELETE"])
 def delete_patient(patient_id):
     patient = db.session.get(Patient, patient_id)
@@ -313,7 +310,6 @@ def delete_patient(patient_id):
     return jsonify({"message": "Patient record deleted successfully."})
 
 
-# REGENERATE AI REMARKS
 @app.route("/api/patients/<int:patient_id>/analyze", methods=["POST"])
 def analyze_patient(patient_id):
     patient = db.session.get(Patient, patient_id)
